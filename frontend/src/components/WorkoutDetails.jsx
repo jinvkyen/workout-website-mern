@@ -1,5 +1,6 @@
 import { formatDistanceToNow } from "date-fns";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
+import {Trash} from "@phosphor-icons/react"
 
 const WorkoutDetails = ({ workout }) => {
 
@@ -28,7 +29,7 @@ const WorkoutDetails = ({ workout }) => {
       <p>Created {formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true })}</p>
 
       <span onClick={handleDelete} className=''>
-        Delete
+        <Trash size={20} color="red"/>
       </span>
     </div>
   );

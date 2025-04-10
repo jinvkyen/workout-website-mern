@@ -2,14 +2,14 @@ import { useState } from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 
 const WorkoutForm = () => {
-
   // use context
-  const { dispatch } = useWorkoutsContext()
+  const { dispatch } = useWorkoutsContext();
 
   const [title, setTitle] = useState("");
   const [reps, setReps] = useState("");
   const [loads, setLoads] = useState("");
   const [error, setError] = useState("");
+  const [emptyFields, setEmptyFields] = useState([]);
 
   const handleAddWorkout = async (e) => {
     e.preventDefault();
@@ -28,10 +28,12 @@ const WorkoutForm = () => {
 
     if (!response.ok) {
       setError(json.error);
+      setEmptyFields(json.emptyFields);
     }
 
     if (response.ok) {
       setError(null);
+      setEmptyFields([]);
       setTitle("");
       setReps("");
       setLoads("");
@@ -42,14 +44,35 @@ const WorkoutForm = () => {
 
   return (
     <form className='create' onSubmit={handleAddWorkout}>
-      <h3 className="text-blue-700 text-xl font-semibold text-center">Add New Workout</h3>
+      <h3 className='text-blue-700 text-xl font-semibold text-center'>Add New Workout</h3>
 
-      <label className="mt-4">Exercise Title: </label>
-      <input className="bg-white" type='text' name='title' id='' onChange={(e) => setTitle(e.target.value)} value={title} />
+      <label className='mt-4'>Exercise Title: </label>
+      <input
+        className={emptyFields.includes("title") ? "error" : ""}
+        type='text'
+        name='title'
+        id=''
+        onChange={(e) => setTitle(e.target.value)}
+        value={title}
+      />
       <label>Repititions: </label>
-      <input className="bg-white" type='number' name='reps' id='' onChange={(e) => setReps(e.target.value)} value={reps} />
+      <input
+        className={emptyFields.includes("reps") ? "error" : ""}
+        type='number'
+        name='reps'
+        id=''
+        onChange={(e) => setReps(e.target.value)}
+        value={reps}
+      />
       <label>Loads (in kg): </label>
-      <input className="bg-white" type='number' name='loads' id='' onChange={(e) => setLoads(e.target.value)} value={loads} />
+      <input
+        className={emptyFields.includes("loads") ? "error" : ""}
+        type='number'
+        name='loads'
+        id=''
+        onChange={(e) => setLoads(e.target.value)}
+        value={loads}
+      />
       <button>Add Workout</button>
       {error && <div className='error'>{error}</div>}
     </form>
